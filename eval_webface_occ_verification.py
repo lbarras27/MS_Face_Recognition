@@ -1,5 +1,3 @@
-import eval_template
-
 import sklearn
 import matplotlib
 import pandas as pd
@@ -7,9 +5,12 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
+from evaluation_util import *
+sys.path.insert(0, './datasets/Webface-OCC')
+from eval_webfaceocc_util import *
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='do ijb test')
+    parser = argparse.ArgumentParser(description='do Webface-OCC test')
     # general
     parser.add_argument('--model-prefix', default='model/backbone.pth', help='path to load model.')
     parser.add_argument('--image-path', default='datasets/Webface-OCC/imgs', type=str, help='path to load images')
@@ -31,9 +32,9 @@ if __name__ == '__main__':
 
     path_to_pairs_list = metadata_path + "/{}_pairs_list.txt".format(occlusion_type)
 
-    img_names = eval_template.get_only_identities_in_pair_list(path_to_pairs_list)
+    img_names = get_only_identities_in_pair_list(path_to_pairs_list)
 
-    img_features = eval_template.get_image_feature(img_path, img_names, None, model_path, batch_size, already_align=True)
+    img_features = get_image_feature(img_path, img_names, None, model_path, batch_size, already_align=True)
 
     if use_flip_test:
         img_features = img_features[:, 0:img_features.shape[1] // 2] + img_features[:, img_features.shape[1] // 2:]
@@ -41,14 +42,14 @@ if __name__ == '__main__':
     else:
         img_features = img_features[:, 0:img_features.shape[1] // 2]
 
-    df_pair_label = eval_template.load_pair_list_label_webface_occ(path_to_pairs_list)
+    df_pair_label = load_pair_list_label_webface_occ(path_to_pairs_list)
 
-    scores = eval_template.verification(img_features, img_names, df_pair_label["img_name1"].values, df_pair_label["img_name2"].values)
+    scores = verification(img_features, img_names, df_pair_label["img_name1"].values, df_pair_label["img_name2"].values)
     np.savetxt(result_dir + "/scores_{0}.csv".format(occlusion_type), scores, delimiter=",")
 
     labels = df_pair_label["label"].values
 
-    eval_template.print_roc(scores, labels, "Webface_OCC", occlusion_type)
+    print_roc(scores, labels, "Webface_OCC", occlusion_type)
     
     print(scores.min(), scores.max())
-    eval_template.compute_accuracy_with_best_threshold(scores, labels, 10)
+    compute_accuracy_with_best_threshold(scores, labels, 10)

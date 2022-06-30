@@ -1,5 +1,3 @@
-import eval_template
-
 import sklearn
 import matplotlib
 import pandas as pd
@@ -7,6 +5,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
+from evaluation_util import *
+sys.path.insert(0, './datasets/AgeDB')
+from eval_agedb_util import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='do AgeDB test')
@@ -29,13 +30,13 @@ if __name__ == '__main__':
     
     gap = args.gap
 
-    img_name_pair_label = eval_template.load_pair_list_label_agedb(metadata_path + "/pairs_list_gap_{0}.txt".format(gap))
+    img_name_pair_label = load_pair_list_label_agedb(metadata_path + "/pairs_list_gap_{0}.txt".format(gap))
     all_img_names = pd.concat([img_name_pair_label["img_name1"], img_name_pair_label["img_name2"]])
     img_names = all_img_names.unique()
     
-    landmarks = eval_template.get_landmarks_vmer(metadata_path + "/landmarks.txt")
+    landmarks = get_landmarks_agedb(metadata_path + "/landmarks.txt")
 
-    img_features = eval_template.get_image_feature(img_path, img_names, landmarks, model_path, batch_size)
+    img_features = get_image_feature(img_path, img_names, landmarks, model_path, batch_size)
 
     if use_flip_test:
         img_features = img_features[:, 0:img_features.shape[1] // 2] + img_features[:, img_features.shape[1] // 2:]
@@ -44,12 +45,12 @@ if __name__ == '__main__':
         img_features = img_features[:, 0:img_features.shape[1] // 2]
 
 
-    scores = eval_template.verification(img_features, img_names, img_name_pair_label["img_name1"].values, img_name_pair_label["img_name2"].values)
+    scores = verification(img_features, img_names, img_name_pair_label["img_name1"].values, img_name_pair_label["img_name2"].values)
     np.savetxt(result_dir + "/scores_agedb_gap_{0}.csv".format(gap), scores, delimiter=",")
 
     labels = img_name_pair_label["label"].values
     
-    eval_template.print_roc(scores, labels, "AgeDB", "verification_gap_{0}".format(gap), save_path=result_dir)
+    print_roc(scores, labels, "AgeDB", "verification_gap_{0}".format(gap), save_path=result_dir)
 
     print(scores.min(), scores.max())
-    eval_template.compute_accuracy_with_best_threshold(scores, labels, 10)
+    compute_accuracy_with_best_threshold(scores, labels, 10)

@@ -1,5 +1,3 @@
-import eval_template
-
 import sklearn
 import matplotlib
 import pandas as pd
@@ -7,6 +5,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
+from evaluation_util import *
+sys.path.insert(0, './datasets/AgeDB')
+from eval_agedb_util import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='do AgeDB test')
@@ -32,12 +33,12 @@ if __name__ == '__main__':
     path_probe = metadata_path + "/probe_set_gap_{0}.txt".format(gap)
     path_gallery = metadata_path +  "/gallery_set_gap_{0}.txt".format(gap)
     
-    landmarks = eval_template.get_landmarks_vmer(metadata_path + "/landmarks.txt")
+    landmarks = get_landmarks_agedb(metadata_path + "/landmarks.txt")
 
-    probe_set, gallery_set = eval_template.load_probe_gallery_set(path_probe, path_gallery)
+    probe_set, gallery_set = load_probe_gallery_set(path_probe, path_gallery)
     all_img_id_used = pd.concat([probe_set, gallery_set])
 
-    img_features = eval_template.get_image_feature(img_path, all_img_id_used["img_name"].values, landmarks, model_path, batch_size)
+    img_features = get_image_feature(img_path, all_img_id_used["img_name"].values, landmarks, model_path, batch_size)
 
     if use_flip_test:
         img_features = img_features[:, 0:img_features.shape[1] // 2] + img_features[:, img_features.shape[1] // 2:]
@@ -45,15 +46,15 @@ if __name__ == '__main__':
     else:
         img_features = img_features[:, 0:img_features.shape[1] // 2]
 
-    map_names_to_id = eval_template.get_map_names_to_id(all_img_id_used["img_name"].values)
-    probe_ids = eval_template.convert_names_to_id(probe_set["img_name"].values, map_names_to_id)
-    gallery_ids = eval_template.convert_names_to_id(gallery_set["img_name"].values, map_names_to_id)
+    map_names_to_id = get_map_names_to_id(all_img_id_used["img_name"].values)
+    probe_ids = convert_names_to_id(probe_set["img_name"].values, map_names_to_id)
+    gallery_ids = convert_names_to_id(gallery_set["img_name"].values, map_names_to_id)
     
     probe_features = img_features[probe_ids]
     gallery_features = img_features[gallery_ids]
     
-    mask = eval_template.compute_mask_agedb(probe_set["img_id"], gallery_set["img_id"])
+    mask = compute_mask_agedb(probe_set["img_id"], gallery_set["img_id"])
 
     print("Start evaluation")
-    eval_template.evaluation(probe_features, gallery_features, mask)
+    evaluation(probe_features, gallery_features, mask)
     print("End evaluation")
