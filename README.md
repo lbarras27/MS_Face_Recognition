@@ -34,4 +34,4 @@ After we can have one additional argument according to the dataset.
 - AgeDB: we have the `--gap` argument that correspond to the age gap between the testing identities. By default is equal to `5` but you can choose between `5`, `10`, `20` and `30`.
 - LFR: we have the `--pose` argument that correspond to the pose of the testing identities. Choice between: `left`, `front`, `right`.
 - VMER, RFW: we have the `--ethnicity` argument that correspond to the ethnicity of the testing identities. Choice between: `african`, `caucasian`, `asian`, `indian` for VMER and for RFW choice between: `African`, `Caucasian`, `Asian`, `Indian` (note the upper case on the first letter).
-- Webface-OCC: we have the `--occlusion` argument that correspond to the type of occlusion of the testing identities. Choice between: `original` (without occlusion), `glasses`, `mask`.
+- Webface-OCC: we have the `--occlusion` argument that correspond to the type of occlusion of the testing identities. Choice between: `original` (without occlusion), `glasses`, `surgical_mask`.
