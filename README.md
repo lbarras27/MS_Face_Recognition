@@ -21,4 +21,5 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 3. Install the conda envrionment with the help of `environment.yml` file. Use this command in anaconda to create the environment I used in this project: `conda env create --name envname --file=environment.yml`.
 4. Now you can execute the corresponding script to the dataset you chose. If you want to do verification protocol, use `eval_{dataset_choose}_verification.py` and if you want to do identification protocol, use `eval_{dataset_choose}_identification.py`.
 - The command for verification is: `python eval_{dataset_name}_verification.py`
-  There is 4 argument use by all the script: 
+There is 4 argument use by all the script: 
+`--model-prefix`: the path to the pretrained model (backbone.pth)
