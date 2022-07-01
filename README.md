@@ -15,4 +15,4 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 - `eval_{datasetname}_verification.py`: the script that allows to do the verification protocol on the {datasetname}.
 - `eval_{datasetname}_identification.py`: the script that allows to do the identification protocol on the {datasetname}.
 
-## How to do the evaluation protocols on the datasets
+## Process to do the evaluation protocols on the datasets
