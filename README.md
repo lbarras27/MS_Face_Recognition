@@ -11,6 +11,6 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 - `model`: must contains the model parameters (ex: backbone.pth)
 - `backbones`: contains the implementation of the features extractor resnet-50 (from Arcface repository)
 - `dataset`: contains directory of each dataset. In each of these directories, we can find metadata files, script to generate these metadata files, results and dataset images.
-- `evaluation_util`: contains all the usefull methods to do the evalutation protocols on all the datasets.
-- `eval_{datasetname}_verification`: the script that allows to do the verification protocol on the {datasetname}.
-- `eval_{datasetname}_identification`: the script that allows to do the identification protocol on the {datasetname}.
+- `evaluation_util.py`: contains all the usefull methods to do the evalutation protocols on all the datasets.
+- `eval_{datasetname}_verification.py`: the script that allows to do the verification protocol on the {datasetname}.
+- `eval_{datasetname}_identification.py`: the script that allows to do the identification protocol on the {datasetname}.
