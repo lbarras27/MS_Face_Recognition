@@ -16,4 +16,4 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 - `eval_{datasetname}_identification.py`: the script that allows to do the identification protocol on the {datasetname}.
 
 ## Steps to do the evaluation protocols on the datasets
-1. Download the dataset you want to use and put the parent folder that contains all the image in the corresponding dataset folder in dataset folder. For example if you download LFR dataset, rename the `LFR folder` that contains all images in `imgs` and put inside `datasets/LFR dataset` folder.
+1. Download the dataset you want to use and put the parent folder that contains all the image in the corresponding dataset folder in `datasets` folder. For example if you download LFR dataset, rename the `LFR folder` that contains all images in `imgs` and put inside `datasets/LFR dataset` folder.
