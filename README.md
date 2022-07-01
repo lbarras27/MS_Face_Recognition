@@ -23,9 +23,11 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 The command for verification is: `python eval_{dataset_name}_verification.py` for example. In the next section I describe the argument that we can use for theses scripts.
 
 ## Execute scripts for verification and identification protocols
-There is 4 argument use by all the script:  
+There is 5 argument use by all the script:  
 - `--model-prefix`: the path to the pretrained model (backbone.pth). By default, the path is `./model/backbone.pth`.
 - `--image-path`: the path to the directory that contains all the images. By default, the path is `./datasets/{dataset}/imgs`. For example in LFR dataset, this is the directory that contains all the folder identities.
 - `--metadata-path`: the path to the metadata folder. By default, the path is `./datasets/{dataset}/metadata`.
 - `--result-dir`: The path to the directory that will contains the results (ROC curves plot, ). By default, the path is `./datasets/{dataset}/results`.
 - `--batch-size`: The batch size to use (allow to speed up the testing). By default, it is equal to 32.
+
+After we can have one additional argument according to the dataset.
