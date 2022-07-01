@@ -36,4 +36,5 @@ After we can have one additional argument according to the dataset.
 - VMER, RFW: we have the `--ethnicity` argument that correspond to the ethnicity of the testing identities. Choice between: `african`, `caucasian`, `asian`, `indian` for VMER and for RFW choice between: `African`, `Caucasian`, `Asian`, `Indian` (note the upper case on the first letter).
 - Webface-OCC: we have the `--occlusion` argument that correspond to the type of occlusion of the testing identities. Choice between: `original` (without occlusion), `glasses`, `surgical_mask`.
 
-If you followed the exactly same project structure, you just need to use the additional parameter of the dataset. For example if you want to do the identification protocol on LFR dataset and want to evaluate the left pose, you just need to execute this following command: `python --pose left eval_lfr_identification.py`.
+If you followed the exactly same project structure, you just need to use the additional parameter of the dataset. For example if you want to do the identification protocol on LFR dataset and want to evaluate the left pose, you just need to execute this following command:  
+`python --pose left eval_lfr_identification.py`.
