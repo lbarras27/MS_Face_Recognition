@@ -2,7 +2,18 @@ import os, sys
 import numpy as np
 import pandas as pd
 
-def get_identities_imgs_name(path="../test", ethnicity_ids=None):
+def get_identities_imgs_name(path, ethnicity_ids):
+    '''
+    Create a dictionnary that contains the identities as keys and the 
+    images of these identities as values. 
+    
+        Parameters: 
+            path (string): path to the folder that contains all the images
+            ethnicity_ids (list): a list that contains people id to use
+
+        Returns: 
+            identities_imgs_name (dict): contains identities as keys and images of the identity as value
+    '''
     
     identities = ethnicity_ids
     identities_imgs_name = {}
@@ -14,7 +25,19 @@ def get_identities_imgs_name(path="../test", ethnicity_ids=None):
     
     return identities_imgs_name
     
-def get_identities_imgs_name2(path=".", ethnicity_ids=None):
+# same that the previous one but use only identities that have landmarks points.
+def get_identities_imgs_name2(path, ethnicity_ids):
+    '''
+    Create a dictionnary that contains the identities as keys and the 
+    images of these identities as values. 
+    
+        Parameters: 
+            path (string): path to the folder that contains all the images
+            ethnicity_ids (list): a list that contains people id to use
+
+        Returns: 
+            identities_imgs_name (dict): contains identities as keys and images of the identity as value
+    '''
     
     with open(os.path.join(path, "landmarks.txt"), "r") as f:
         lines = f.readlines()
@@ -42,63 +65,26 @@ def get_identities_imgs_name2(path=".", ethnicity_ids=None):
     return identities_imgs_name
 
     
- 
-def generate_pairs(identities_imgs_name):
+    
+def generate_pairs(identities_imgs_name, n=1):
+    '''
+    Generate randomly n positive pairs and n negative pairs for each identities.
+    
+        Parameters: 
+            identities_imgs_name (dict): contains identities as keys and images of the identity as value
+            n (int): number of positive and negative pairs to generate by identity
 
+        Returns: 
+            pairs_same (np.array of size n): all the positives pairs
+            pairs_diff (np.array of size n): all the negatives pairs
+    '''
     pairs_same = []
     pairs_diff = []
     for k, v in identities_imgs_name.items():
         if len(v) == 0 or len(v) == 1:
             continue
         
-        if len(v) >= 4:
-            pair_same = np.array(v)[np.random.choice(len(v), 4, replace=False)]
-            pairs_same.append(["{0}/{1}".format(k, pair_same[0]), "{0}/{1}".format(k, pair_same[1])])
-            pairs_same.append(["{0}/{1}".format(k, pair_same[2]), "{0}/{1}".format(k, pair_same[3])])
-        else:
-            pair_same = np.array(v)[np.random.choice(len(v), 2, replace=False)]
-            pairs_same.append(["{0}/{1}".format(k, pair_same[0]), "{0}/{1}".format(k, pair_same[1])])
-        
-        id_list = list(identities_imgs_name.keys())
-        id_list.remove(k)
-
-        if len(v) >= 4:
-            other_ids = np.random.choice(id_list, 2, replace=False)
-            other_id = other_ids[0]
-            if len(identities_imgs_name[other_id]) == 0:
-                continue
-            first_elem = pair_same[0]
-            second_elem = np.array(identities_imgs_name[other_id])[np.random.choice(len(identities_imgs_name[other_id]), 1)[0]]
-            pairs_diff.append(["{0}/{1}".format(k, first_elem), "{0}/{1}".format(other_id, second_elem)])
-
-            other_id = other_ids[1]
-            if len(identities_imgs_name[other_id]) == 0:
-                continue
-            first_elem = pair_same[2]
-            second_elem = np.array(identities_imgs_name[other_id])[np.random.choice(len(identities_imgs_name[other_id]), 1)[0]]
-            pairs_diff.append(["{0}/{1}".format(k, first_elem), "{0}/{1}".format(other_id, second_elem)])
-        else:
-            other_id = np.random.choice(id_list, 1)[0]
-            if len(identities_imgs_name[other_id]) == 0:
-                continue
-            first_elem = pair_same[0]
-            second_elem = np.array(identities_imgs_name[other_id])[np.random.choice(len(identities_imgs_name[other_id]), 1)[0]]
-            pairs_diff.append(["{0}/{1}".format(k, first_elem), "{0}/{1}".format(other_id, second_elem)])
-
-    pairs_same = np.array(pairs_same)
-    pairs_diff = np.array(pairs_diff)
-    
-    return pairs_same, pairs_diff
-    
-def generate_pairs2(identities_imgs_name):
-
-    pairs_same = []
-    pairs_diff = []
-    for k, v in identities_imgs_name.items():
-        if len(v) == 0 or len(v) == 1:
-            continue
-        
-        pair_same = np.array(v)[np.random.choice(len(v), 80, replace=False)]
+        pair_same = np.array(v)[np.random.choice(len(v), n*2, replace=False)]
         
         for i in range(0, len(pair_same), 2):
             pairs_same.append(["{0}/{1}".format(k, pair_same[i]), "{0}/{1}".format(k, pair_same[i+1])])
@@ -107,7 +93,7 @@ def generate_pairs2(identities_imgs_name):
         id_list = list(identities_imgs_name.keys())
         id_list.remove(k)
             
-        other_ids = np.random.choice(id_list, 40, replace=True)
+        other_ids = np.random.choice(id_list, n, replace=True)
         
         for i in range(0, len(other_ids)):
             other_id = other_ids[i]
@@ -124,6 +110,14 @@ def generate_pairs2(identities_imgs_name):
     
 
 def write_pairs(identities_pairs, identities_pairs_not_same, output="out.txt"):
+    '''
+    Write the positives and negatives pairs in the file output with their corresponding label (1 positive, 0 negative).
+    
+        Parameters: 
+            identities_pairs (np.array of size n): the positives pairs
+            identities_pairs_not_same (np.array of size n): the negatives pairs
+            output (string): name of the output file
+    '''
     with open(output, "w") as f:
         for i in range(len(identities_pairs)):
             f.write(identities_pairs[i][0] + " " + identities_pairs[i][1] + " 1")
@@ -135,7 +129,19 @@ def write_pairs(identities_pairs, identities_pairs_not_same, output="out.txt"):
             
             
 def generate_probe_gallery_set(path, output_gallery="gallery_set.txt", output_probe="probe_set.txt", ethnicity="african"):
-    df = pd.read_xml("VMER_dataset/finalTest.xml", parser="etree")
+    '''
+    Generate the probe set and the gallery set files with images of only people in the specified ethnicity.  
+    
+        Parameters: 
+            path (string): path to the file that contains all the image names (file generated by the previous method)
+            output_gallery (string): name of the output gallery set file
+            output_probe (string): name of the output probe set file
+            ethnicity (string): ethnicity in the gallery and probe set (african, caucasian, asian, indian)
+            
+
+    '''
+    
+    df = pd.read_xml("metadata/finalTest.xml", parser="etree")
     if ethnicity == "african":
         ethnicity_ids = df[df["ethnicity"] == 1]["id"].values.tolist()
     elif ethnicity == "asian":
@@ -145,8 +151,8 @@ def generate_probe_gallery_set(path, output_gallery="gallery_set.txt", output_pr
     elif ethnicity == "caucasian":
         ethnicity_ids = df[df["ethnicity"] == 3]["id"].values.tolist()
     
-    all_identities_img_names = get_identities_imgs_name2(path=".", ethnicity_ids=None)
-    identities_img_names = get_identities_imgs_name2(path=".", ethnicity_ids=ethnicity_ids)
+    all_identities_img_names = get_identities_imgs_name2(path=path, ethnicity_ids=None)
+    identities_img_names = get_identities_imgs_name2(path=path, ethnicity_ids=ethnicity_ids)
 
     probe_set = []
     gallery_set = []

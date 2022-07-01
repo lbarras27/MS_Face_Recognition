@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import numpy as np
+import cv2
 
 def load_pair_list_label_agedb(path_file):
     '''
@@ -61,3 +62,4 @@ def get_landmarks_agedb(path):
         all_landmarks[name_landmarks[0]] = np.array(name_landmarks[1:], dtype=float).reshape((5, 2))
         
     return all_landmarks
+    
