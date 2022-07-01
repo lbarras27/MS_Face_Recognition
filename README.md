@@ -5,4 +5,7 @@ The goal of this project is to measure the impact of influencing factors on the 
 - Occlusion: Webface-OCC
 - Ethnicity variation: VMER, RFW
 
+I use the a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor. The pretrained model can be found here.
+
 ## Project structure
+- `model`: must contains the model parameters (ex: backbone.pth)
