@@ -20,7 +20,7 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 2. Download the pretrained model resnet-50 on MS1MV2 and put the model in `model` folder.
 3. Install the conda envrionment with the help of `environment.yml` file. Use this command in anaconda to create the environment I used in this project: `conda env create --name envname --file=environment.yml`.
 4. Now you can execute the corresponding script to the dataset you chose. If you want to do verification protocol, use `eval_{dataset_choose}_verification.py` and if you want to do identification protocol, use `eval_{dataset_choose}_identification.py`.  
-The command for verification is: `python eval_{dataset_name}_verification.py` for example. In the next section I describe the argument that we can use for theses scripts.
+The command for verification is: `python eval_{dataset_name}_verification.py` for example. In the next section I describe more in details and list the different argument that we can use for theses scripts.
 
 ## Execute scripts for verification and identification protocols
 There is 5 argument use by all the script:  
