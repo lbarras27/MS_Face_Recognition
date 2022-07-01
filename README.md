@@ -9,3 +9,5 @@ I use the a pretrain model trained on MS1M-V2 and use resnet-50 as feature extra
 
 ## Project structure
 - `model`: must contains the model parameters (ex: backbone.pth)
+- `backbones`: contains the implementation of the features extractor resnet-50 (from Arcface repository)
+- `dataset`: contains directory of each dataset. In each of these directories, we can find metadata files, script to generate these metadata files, results and dataset images.
