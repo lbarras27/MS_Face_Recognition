@@ -24,6 +24,7 @@ The command for verification is: `python eval_{dataset_name}_verification.py` fo
 
 ## Execute scripts for verification and identification protocols
 There is 4 argument use by all the script:  
-- `--model-prefix`: the path to the pretrained model (backbone.pth)
+- `--model-prefix`: the path to the pretrained model (backbone.pth). By default, the path is `./model/backbone.pth`.
 - `--image-path`: the path to the directory that contains all the images. By default, the path is `./datasets/{dataset}/imgs`. For example in LFR dataset, this is the directory that contains all the folder identities.
-- `--metadata-path`: the path to the metadata folder. By default, the path is `./datasets/{dataset}/metadata`
+- `--metadata-path`: the path to the metadata folder. By default, the path is `./datasets/{dataset}/metadata`.
+- `--result-dir`: The path to the directory that will contains the results (ROC curves plot, ). By default, the path is `./datasets/{dataset}/results`.
