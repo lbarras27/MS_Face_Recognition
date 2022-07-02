@@ -2,7 +2,7 @@ import os, sys
 import numpy as np
 import pandas as pd
 
-def get_identities_imgs_name(path="rec2img_masked", mask=None):
+def get_identities_imgs_name(path="imgs", mask=None):
     '''
     Create a dictionnary that contains the identities as keys and the 
     images of these identities as values. mask filter the images to get only 
@@ -10,7 +10,7 @@ def get_identities_imgs_name(path="rec2img_masked", mask=None):
     
         Parameters: 
             path (string): path to the folder that contains all the images
-            dir (string): the occlusion type (original (without occ.), glasses, surgical_mask, all), if None, all images
+            dir (string): the occlusion type (original (without occ), glass, surgical, all), if None, all images
 
         Returns: 
             masked_identities_imgs_name (dict): contains identities as keys and images of the identity as value
@@ -38,7 +38,7 @@ def get_identities_imgs_name(path="rec2img_masked", mask=None):
     return masked_identities_imgs_name
 
 
-def get_original_identities_imgs_name(path="rec2img_masked"):
+def get_original_identities_imgs_name(path="imgs"):
     '''
     Create a dictionnary that contains the identities as keys and the 
     images of these identities as values.
@@ -91,6 +91,87 @@ def generate_pairs(identities_imgs_name):
             continue
         first_elem = pair_same[0]
         second_elem = np.array(identities_imgs_name[other_id])[np.random.choice(len(identities_imgs_name[other_id]), 1)[0]]
+        pairs_diff.append(["{0}/{1}".format(k, first_elem), "{0}/{1}".format(other_id, second_elem)])
+
+    pairs_same = np.array(pairs_same)
+    pairs_diff = np.array(pairs_diff)
+    
+    return pairs_same, pairs_diff
+    
+def generate_pairs_mixed(identities_imgs_name, occ1, occ2):
+    '''
+    Generate randomly one positive and one negative pair for each identities. The first 
+    element pair will have the occlusion occ1 and the second one the occlusion occ2.
+    
+        Parameters: 
+            identities_imgs_name (dict): contains identities as keys and images of the identity as value
+            occ1 (string): occlusion type of the first element pair (original (without occ), glass, surgical)
+            occ2 (string): occlusion type of the second element pair (original (without occ), glass, surgical)
+
+        Returns: 
+            pairs_same (np.array of size n): all the positives pairs
+            pairs_diff (np.array of size n): all the negatives pairs
+    '''
+
+    pairs_same = []
+    pairs_diff = []
+    for k, v in identities_imgs_name.items():
+        if len(v) == 0 or len(v) == 1:
+            continue
+            
+        occlusions = {occ1: [], occ2: []}
+        for img_name in v:
+            
+            if occ1 == "original" :
+                if "_" not in img_name:
+                    occlusions[occ1].append(img_name)
+            else:
+                if occ1 in img_name:
+                    occlusions[occ1].append(img_name)
+            
+            if occ2 == "original" :
+                if "_" not in img_name:
+                    occlusions[occ2].append(img_name)
+            else:
+                if occ2 in img_name:
+                    occlusions[occ2].append(img_name)
+        
+        if len(occlusions[occ1]) == 0 or len(occlusions[occ2]) == 0:
+            continue
+
+        pair_same1 = np.array(occlusions[occ1])[np.random.choice(len(occlusions[occ1]), 1)]
+        pair_same2 = np.array(occlusions[occ2])[np.random.choice(len(occlusions[occ2]), 1)]
+        pairs_same.append(["{0}/{1}".format(k, pair_same1[0]), "{0}/{1}".format(k, pair_same2[0])])
+        
+        id_list = list(identities_imgs_name.keys())
+        id_list.remove(k)
+        other_id = np.random.choice(id_list, 1)[0]
+        
+        if len(identities_imgs_name[other_id]) == 0:
+            continue
+
+        occlusions_other = {occ1: [], occ2: []}
+        for img_name in identities_imgs_name[other_id]:
+
+            if occ1 == "original" :
+                if "_" not in img_name:
+                    occlusions_other[occ1].append(img_name)
+            else:
+                if occ1 in img_name:
+                    occlusions_other[occ1].append(img_name)
+            
+            if occ2 == "original" :
+                if "_" not in img_name:
+                    occlusions_other[occ2].append(img_name)
+            else:
+                if occ2 in img_name:
+                    occlusions_other[occ2].append(img_name)
+        
+        if len(occlusions_other[occ2]) == 0:
+            continue
+
+        first_elem = pair_same1[0]
+        second_elem = np.array(occlusions_other[occ2])[np.random.choice(len(occlusions_other[occ2]), 1)[0]]
         pairs_diff.append(["{0}/{1}".format(k, first_elem), "{0}/{1}".format(other_id, second_elem)])
 
     pairs_same = np.array(pairs_same)
@@ -174,8 +255,8 @@ def generate_probe_gallery_set(path, output_gallery="gallery_set.txt", output_pr
             path (string): path to the file that contains all the image names (file generated by the previous method: generate_file_with_all_identities_names())
             output_gallery (string): name of the output gallery set file
             output_probe (string): name of the output probe set file
-            filter_gallery (string): occlusion_type in the gallery set (original (without occ.), glasses, surgical_mask, all)
-            filter_probe (string): occlusion type in the probe set (original (without occ.), glasses, surgical_mask, all)
+            filter_gallery (string): occlusion_type in the gallery set (original (without occ), glass, surgical, all)
+            filter_probe (string): occlusion type in the probe set (original (without occ), glass, surgical, all)
 
     '''
     

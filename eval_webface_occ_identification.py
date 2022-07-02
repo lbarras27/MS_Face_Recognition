@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--probe-set', default='', type=str, help='name of probe set file')
     parser.add_argument('--result-dir', default='datasets/Webface-OCC/results/', type=str, help='path to save results')
     parser.add_argument('--batch-size', default=32, type=int, help='')
-    parser.add_argument('--occlusion', default='surgical_mask2', type=str, help='')
+    parser.add_argument('--occlusion', default='original', type=str, help='')
     args = parser.parse_args()
 
     occlusion_type = args.occlusion
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     
     gallery_set_filename = args.gallery_set
     if gallery_set_filename == '':
-        gallery_set_filename = "gallery_set_original2.txt"
+        gallery_set_filename = "gallery_set_original_{}.txt".format(occlusion_type)
         
     probe_set_filename = args.probe_set
     if probe_set_filename == '':

@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     labels = df_pair_label["label"].values
 
-    print_roc(scores, labels, "LFR", "front-{}".format(pose))
+    print_roc(scores, labels, "LFR", "front-{}".format(pose), save_path=result_dir)
     
     print(scores.min(), scores.max())
     compute_accuracy_with_best_threshold(scores, labels, 10)

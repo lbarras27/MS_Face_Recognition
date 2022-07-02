@@ -2,15 +2,15 @@ import os, sys
 import numpy as np
 import pandas as pd
 
-def get_identities_imgs_name(path="LFR dataset", dir=None):
+def get_identities_imgs_name(path="imgs", direction=None):
     '''
     Create a dictionnary that contains the identities as keys and the 
-    images of these identities as values. dir filter the images to get only 
+    images of these identities as values. direction filter the images to get only 
     images with the pose specified.
     
         Parameters: 
             path (string): path to the folder that contains all the images
-            dir (string): the pose (left, front, rignt), if None, all poses
+            direction (string): the pose (left, front, rignt), if None, all poses
 
         Returns: 
             lfr_identities_imgs_name (dict): contains identities as keys and images of the identity as value
@@ -26,10 +26,10 @@ def get_identities_imgs_name(path="LFR dataset", dir=None):
             for img_name in os.listdir(os.path.join(path_flr, pose)):
                 imgs_name.append(pose+"/"+img_name)
         identities_imgs_name[identity] = imgs_name
-    if dir == None:
+    if direction == None:
         return identities_imgs_name
     
-    test_string = dir
+    test_string = direction
     lfr_identities_imgs_name = {}
     for k, v in identities_imgs_name.items():
         lfr_imgs = []

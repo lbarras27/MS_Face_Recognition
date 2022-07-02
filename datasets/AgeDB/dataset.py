@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import os
 import cv2
+from facenet_pytorch import MTCNN
+from PIL import Image
 
 def get_identities_imgs_name(path="."):
     '''
@@ -240,3 +242,30 @@ def solve_caracter_encoding_img_names(path_img_names="imgs"):
         if " _" in img_name:
             new_name = img_name.replace(" _", "_")
             os.rename(path_img_names + "/" + img_name, path_img_names + "/" +new_name)
+            
+def extract_landmarks_point(path_img, output="metadata/landmarks.txt", device="cuda:0"):
+    '''
+    Extract landmarks points with MTCNN and save in output.
+    
+        Parameters: 
+            path_img (string): path to the images
+            output (string): outpout file that will contains landmarks points
+            device (string): device to use in the model (cpu, cuda)
+
+    '''
+    mtcnn = MTCNN(keep_all=True, device='cuda:0')
+    all_imgs_names = os.listdir(path_img)
+    
+    with open(output, "w") as f:
+        for i in range(len(all_imgs_names)):
+            img = Image.open(path_img + "/" + all_imgs_names[i])
+            imgs = Image.new("RGB", img.size)
+            imgs.paste(img)
+            boxes, probs, landmarks = mtcnn.detect(imgs, landmarks=True)
+            
+            if landmarks is not None and len(landmarks) == 1:
+                f.write(all_imgs_names[i]+" ")
+                f.write(" ".join(landmarks.flatten().astype(str)))
+                f.write("\n")
+            else:
+                print(all_imgs_names[i])

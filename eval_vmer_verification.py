@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     labels = img_name_pair_label["label"].values
 
-    print_roc(scores, labels, "VMER", ethnicity)
+    print_roc(scores, labels, "VMER", ethnicity, save_path=result_dir)
     
     print(scores.min(), scores.max())
     compute_accuracy_with_best_threshold(scores, labels, 10)

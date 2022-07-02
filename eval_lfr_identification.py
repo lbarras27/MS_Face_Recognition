@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--probe-set', default='', type=str, help='name of probe set file')
     parser.add_argument('--result-dir', default='datasets/LFR dataset/results/', type=str, help='path to save results')
     parser.add_argument('--batch-size', default=32, type=int, help='')
-    parser.add_argument('--pose', default='right', type=str, help='')
+    parser.add_argument('--pose', default='front', type=str, help='')
     args = parser.parse_args()
 
     pose = args.pose

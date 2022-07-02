@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     labels = img_name_pair_label["label"].values
     
-    print_roc(scores, labels, "AgeDB", "verification_gap_{0}".format(gap), save_path=result_dir)
+    print_roc(scores, labels, "AgeDB", "gap_{0}".format(gap), save_path=result_dir)
 
     print(scores.min(), scores.max())
     compute_accuracy_with_best_threshold(scores, labels, 10)

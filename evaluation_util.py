@@ -26,7 +26,20 @@ import sys
 
 
 class Embedding(object):
+    '''
+    This class is used to extract the features with a deep network model (from Arcface)
+    '''
     def __init__(self, prefix, data_shape, batch_size=1, network='r50'):
+        '''
+        Get the images features and align before if needed 
+    
+            Parameters: 
+                prefix (string): path to the deep model 
+                data_shape (tuple): the shape of the images
+                batch_size (int): the batch size to used for the model
+                network (string): the model to use 
+
+        '''
         image_size = (112, 112)
         self.image_size = image_size
         weight = torch.load(prefix)
@@ -47,6 +60,16 @@ class Embedding(object):
         self.data_shape = data_shape
 
     def get(self, rimg, landmark):
+        '''
+        align the image 'rimg' with the landmarks points specified by 'landmark'.
+        
+            Parameters: 
+                rimg (np.array (3, h, w)): image to align
+                landmark (np.array): the landmarks points
+
+            Returns: 
+               input_blob (np array (2, 3, 112, 112)): contain the aligned input image and the aligned flipped input image
+        '''
         if landmark is not None:
             assert landmark.shape[0] == 68 or landmark.shape[0] == 5
             assert landmark.shape[1] == 2
@@ -292,7 +315,7 @@ def verification(template_norm_feats=None,
             print('Finish {}/{} pairs.'.format(c, total_sublists))
     return score
 
-def evaluation(query_feats, gallery_feats, mask, is_cmc=False):
+def evaluation(query_feats, gallery_feats, mask, is_cmc=False, dataset_name="AgeDB"):
     '''
     Evaluation protocol (one-to-many) and print top rank-n and cmc metric
     
@@ -301,6 +324,7 @@ def evaluation(query_feats, gallery_feats, mask, is_cmc=False):
             gallery_feats (np array (n, 512)): the image features of the probe set
             mask (list of int): map identity from the probe to gallery set
             is_cmc (bool): if True use cmc metric
+            dataset_name (string): name of the dataset to evaluate
     '''
     Fars = [0.01, 0.1]
     print(query_feats.shape)
@@ -347,7 +371,7 @@ def evaluation(query_feats, gallery_feats, mask, is_cmc=False):
         cmc = correct_nums / query_num
 
         print("CMC (1-20): {0}".format(cmc))
-        print_cmc(cmc, "RFW")
+        print_cmc(cmc, dataset_name)
 
     neg_pair_num = query_num * gallery_num - query_num
     print(neg_pair_num)
@@ -413,10 +437,10 @@ def print_roc(scores, label, target="dataset_name", method="method_name", save_p
     plt.ylabel('True Positive Rate')
     plt.title('ROC on {}'.format(target))
     plt.legend(loc="lower right")
-    fig.savefig(os.path.join(save_path, '%s.pdf' % target.lower()))
+    fig.savefig(os.path.join(save_path, 'roc_{0}_{1}.pdf'.format(target.lower(), method)))
     print(tpr_fpr_table)
 
-def print_cmc(cmc_array, target, save_path="."):
+def print_cmc(cmc_array, target, save_path=""):
     '''
     Print the cmc curve metric
     
@@ -431,4 +455,7 @@ def print_cmc(cmc_array, target, save_path="."):
     plt.xlabel('Rank')
     plt.ylabel('Accuracy')
     plt.title('CMC on {}'.format(target))
-    fig.savefig(os.path.join(save_path, '%s.pdf' % target.lower()))
+    
+    if save_path == "":
+        save_path = "datasets/{}/results".format(target)
+    fig.savefig(os.path.join(save_path, 'cmc_%s.pdf' % target.lower()))

@@ -54,7 +54,7 @@ if __name__ == '__main__':
     labels = df_pair_label["label"].values
     labels[labels > 0] = 1
     labels[labels == 0] = 0
-    print_roc(scores, labels, "CALFW", "verification")
+    print_roc(scores, labels, "CALFW", "verification", save_path=result_dir)
     
     print(scores.min(), scores.max())
     compute_accuracy_with_best_threshold(scores, labels, 10)

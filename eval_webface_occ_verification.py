@@ -27,7 +27,7 @@ if __name__ == '__main__':
     metadata_path = args.metadata_path
     pair_filename = args.pair_name
     if pair_filename == '':
-        pair_filename = "{}_pairs_list.txt".format(occlusion_type)
+        pair_filename = "original_{}_pairs_list.txt".format(occlusion_type)
     result_dir = args.result_dir
     gpu_id = None
     use_flip_test = True
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     labels = df_pair_label["label"].values
 
-    print_roc(scores, labels, "Webface_OCC", occlusion_type)
+    print_roc(scores, labels, "Webface_OCC", occlusion_type, save_path=result_dir)
     
     print(scores.min(), scores.max())
     compute_accuracy_with_best_threshold(scores, labels, 10)

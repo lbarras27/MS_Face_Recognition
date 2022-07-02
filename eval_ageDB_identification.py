@@ -74,5 +74,5 @@ if __name__ == '__main__':
     mask = compute_mask_agedb(probe_set["img_id"], gallery_set["img_id"])
 
     print("Start evaluation (identification protocol)")
-    evaluation(probe_features, gallery_features, mask)
+    evaluation(probe_features, gallery_features, mask, is_cmc=True)
     print("End evaluation")

@@ -1,6 +1,9 @@
 import os, sys
 import numpy as np
 import pandas as pd
+from facenet_pytorch import MTCNN
+from PIL import Image
+import cv2
 
 def get_identities_imgs_name(path, ethnicity_ids):
     '''
@@ -184,4 +187,32 @@ def generate_probe_gallery_set(path, output_gallery="gallery_set.txt", output_pr
         for i in range(len(ids_probe)):
             f.write("{0} {1}".format(probe_set[i], ids_probe[i]))
             f.write("\n")
+            
+    
+def extract_landmarks_points(img_path, output="metadata/landmarks.txt", device="cuda:0"):
+    '''
+    Extract landmarks points with MTCNN and save in output.
+    
+        Parameters: 
+            path_img (string): path to the images
+            output (string): outpout file that will contains landmarks points
+            device (string): device to use in the model (cpu, cuda)
+
+    '''
+    mtcnn = MTCNN(keep_all=True, device=device)
+    all_imgs_names = []
+    for identity in os.listdir(img_path):
+        imgs_identity = os.listdir(img_path + "/" + identity)
+        imgs_identity = [identity+"/"+img for img in imgs_identity]
+        all_imgs_names += imgs_identity
+        
+    with open(output, "w") as f:
+        for i in range(len(all_imgs_names)):
+            imgs = Image.open(img_path + "/" + all_imgs_names[i])
+            boxes, probs, landmarks = mtcnn.detect(imgs, landmarks=True)
+            
+            if landmarks is not None and len(landmarks) == 1:
+                f.write(all_imgs_names[i]+" ")
+                f.write(" ".join(landmarks.flatten().astype(str)))
+                f.write("\n")
             
