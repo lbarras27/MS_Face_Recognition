@@ -17,7 +17,7 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 
 ## Steps to do the evaluation protocols on the datasets
 1. Download the dataset you want to use and put the parent folder that contains all the image in the corresponding dataset folder in `datasets` folder. For example if you download LFR dataset, rename the folder that contains all images in `imgs` and put inside `datasets/LFR dataset` folder. If the dataset contains some metata files, don't need to care it, they are already in the `metadata` folder of the datasets.
-2. Download the pretrained model resnet-50 on MS1MV2 and put the model in `model` folder.
+2. Download the pretrained model resnet-50 on MS1M-V2 and put the model in `model` folder.
 3. Install the conda envrionment with the help of `environment.yml` file. Use this command in anaconda to create the environment I used in this project: `conda env create --name envname --file=environment.yml`.
 4. Now you can execute the corresponding script to the dataset you chose. If you want to do verification protocol, use `eval_{dataset_choose}_verification.py` and if you want to do identification protocol, use `eval_{dataset_choose}_identification.py`.  
 The command for verification is: `python eval_{dataset_name}_verification.py` for example. In the next section I describe more in details and list the different argument that we can use for theses scripts.
