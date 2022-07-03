@@ -10,7 +10,8 @@ I use a pretrain model trained on MS1M-V2 and use resnet-50 as feature extractor
 ## Project structure
 - `model`: must contains the model parameters (ex: backbone.pth)
 - `backbones`: contains the implementation of the features extractor resnet-50 (from Arcface repository)
-- `dataset`: contains directory of each dataset. In each of these directories, we can find metadata files, script to generate these metadata files, results and dataset images.
+- `datasets`: contains directory of each dataset. In each of these directories, we can find metadata files, script to generate these metadata files, results and dataset images.
+- `examples`: contains a jupyter notebook that shows how to compute roc curves from the scores and the labels of the pairs list files and save the results roc curves data in a .npz file. It contains also a second jupyter notebook that shows how to do more beautiful roc curve plots.
 - `evaluation_util.py`: contains all the usefull methods to do the evalutation protocols on all the datasets.
 - `eval_{datasetname}_verification.py`: the script that allows to do the verification protocol on the {datasetname}.
 - `eval_{datasetname}_identification.py`: the script that allows to do the identification protocol on the {datasetname}.
