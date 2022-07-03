@@ -38,4 +38,4 @@ After we can have one additional argument according to the dataset.
 - Webface-OCC: we have the `--occlusion` argument that correspond to the type of occlusion of the testing identities. Choice between: `original` (without occlusion), `glass`, `surgical`.
 
 If you followed the exactly same project structure, you just need to use the additional parameter of the dataset. For example if you want to do the identification protocol on LFR dataset and want to evaluate the left pose, you just need to execute this following command:  
-`python eval_lfr_identification.py --pose left`. You may have a character encoding problem for AgeDB dataset, if this is the case, execute the `solve_caracter_encoding_img_names()` that is in the file `dataset.py` in `AgeDB` folder (This file replace characters in image names).
+`python eval_lfr_identification.py --pose left`. You may have a character encoding problem for AgeDB dataset, if this is the case, execute the `solve_caracter_encoding_img_names()` method that is in the file `dataset.py` in `AgeDB` folder (This file replace characters in image names).
