@@ -39,7 +39,7 @@ After we can have one additional argument according to the dataset.
 
 We have also specific argument for identification or verification.
 - Verification: we have the `--pair-name` argument that correspond to the name of the pair list file. By default we use the name of the pair list file present in the `metadata` folder. 
-- Identification: we have the `--gallery-set`and `probe-set` arguments that correspond to the names of the gallery set file and the probe set file respectively. By default we use the name of the gallery set file and probe set file present in the `metadata` folder.
+- Identification: we have the `--gallery-set`and `--probe-set` arguments that correspond to the names of the gallery set file and the probe set file respectively. By default we use the name of the gallery set file and probe set file present in the `metadata` folder.
 
 If you followed the exactly same project structure, you just need to use the additional parameter of the dataset. For example if you want to do the identification protocol on LFR dataset and want to evaluate the left pose, you just need to execute this following command:  
 `python eval_lfr_identification.py --pose left`. You may have a character encoding problem for AgeDB dataset, if this is the case, execute the `solve_caracter_encoding_img_names()` method that is in the file `dataset.py` in `AgeDB` folder (This file replace characters in image names).
