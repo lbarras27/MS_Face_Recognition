@@ -14,8 +14,8 @@ if __name__ == '__main__':
     parser.add_argument('--model-prefix', default='model/backbone.pth', help='path to load model.')
     parser.add_argument('--image-path', default='datasets/calfw/imgs', type=str, help='path to load images')
     parser.add_argument('--metadata-path', default='datasets/calfw/metadata', type=str, help='path to metada files')
-    parser.add_argument('--gallery-set', default='', type=str, help='name of gallery set file')
-    parser.add_argument('--probe-set', default='', type=str, help='name of probe set file')
+    parser.add_argument('--gallery-set', default='', help='name of gallery set file')
+    parser.add_argument('--probe-set', default='', help='name of probe set file')
     parser.add_argument('--result-dir', default='datasets/calfw/results/', type=str, help='path to save results')
     parser.add_argument('--batch-size', default=32, type=int, help='')
    
